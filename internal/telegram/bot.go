@@ -9,9 +9,10 @@ import (
 )
 
 type Bot struct {
-	Db      storage.Storage
-	TgBot   *tgbotapi.BotAPI
-	Tracker *tracker.Tracker
+	Db       storage.Storage
+	TgBot    *tgbotapi.BotAPI
+	Commands map[string]string
+	Tracker  *tracker.Tracker
 }
 
 func NewBot(cfg config.Config, db storage.Storage, tracker *tracker.Tracker) (*Bot, error) {
@@ -20,11 +21,13 @@ func NewBot(cfg config.Config, db storage.Storage, tracker *tracker.Tracker) (*B
 	if err != nil {
 		return nil, err
 	}
+	commands := setUpCommands()
 
 	return &Bot{
-		Db:      db,
-		TgBot:   tgBot,
-		Tracker: tracker,
+		Db:       db,
+		TgBot:    tgBot,
+		Commands: commands,
+		Tracker:  tracker,
 	}, nil
 }
 
@@ -40,7 +43,7 @@ func (bot *Bot) Run() error {
 			continue
 		}
 
-		if update.Message.IsCommand() {
+		if bot.isCommand(update.Message) {
 			if err := bot.processCommand(update.Message); err != nil {
 				return err
 			}

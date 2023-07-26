@@ -6,4 +6,5 @@ type Storage interface {
 	Exists(chatId int64, in string) (bool, error)
 	Rand(chatId int64) (string, error)
 	List(chatId int64) ([]string, error)
+	LenNotZero(chatId int64) (bool, error)
 }
