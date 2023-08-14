@@ -13,7 +13,7 @@ func main() {
 
     cfg, err := config.New()
     if err != nil {
-        log.Fatalf("Failed setup configuration: %v", err)
+        log.Fatalf("Failed to setup Configuration: %v", err)
         return
     }
 
@@ -34,7 +34,7 @@ func main() {
     bot.TgBot.Debug = true
 
     if err := bot.Run(); err != nil {
-        log.Fatalf("Failed to launch bot: %v", err)
+        log.Fatalf("Failed to launch Bot: %v", err)
         return
     }
 }
